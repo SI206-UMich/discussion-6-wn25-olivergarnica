@@ -14,7 +14,7 @@ def load_csv(f):
     
     Note: Don't strip or otherwise modify strings. Don't change datatypes from strings. 
     '''
-    outer = {}
+    d = {}
     base_path = os.path.abspath(os.path.dirname(__file__))
     full_path = os.path.join(base_path, f)
 
@@ -25,17 +25,17 @@ def load_csv(f):
     years = header[1:] # makes a list of the years
     
     for y in years:
-        outer[y] = {} # makes a new dict for each year
+        d[y] = {} # makes a new dict for each year
     
     for line in lines[1:]:
         parts = line.split(',')
         month_str = parts[0]
         value_str = parts[1:]
 
-        for y, val_str in zip(years, value_str):
-            outer[y][month_str] = int(val_str)     
-    
-    return outer
+        for y, val_str in zip(years, value_str): # Should zip the year with the current value of the month its on
+            d[y][month_str] = int(val_str) 
+
+    return d
 
 def get_annual_max(d):
     '''
@@ -49,7 +49,20 @@ def get_annual_max(d):
     Note: Don't strip or otherwise modify strings. Do not change datatypes except where necessary.
         You'll have to change vals to int to compare them. 
     '''
-    pass
+    max_list = [] # final return
+    
+    for year, month_dict in d.items(): # keys are year and values are each dictionary that contains year by month
+        best_value = None
+        best_month = None
+
+        for month, val in month_dict.items(): # keys are month and values are the visitors by month
+            if best_value is None or val > best_value:
+                best_month = month
+                best_value = val
+    
+        max_list.append((year, best_month, best_value))
+    print(max_list)
+    return max_list
 
 
 def get_month_avg(d):
