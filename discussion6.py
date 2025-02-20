@@ -14,10 +14,28 @@ def load_csv(f):
     
     Note: Don't strip or otherwise modify strings. Don't change datatypes from strings. 
     '''
-
+    outer = {}
     base_path = os.path.abspath(os.path.dirname(__file__))
     full_path = os.path.join(base_path, f)
-    # use this 'full_path' variable as the file that you open
+
+    with open(full_path, 'r') as daily_visitors:
+        lines = daily_visitors.read().splitlines() # reads and splits each line
+    
+    header = lines[0].split(',') # gets the header and splits it by comma
+    years = header[1:] # makes a list of the years
+    
+    for y in years:
+        outer[y] = {} # makes a new dict for each year
+    
+    for line in lines[1:]:
+        parts = line.split(',')
+        month_str = parts[0]
+        value_str = parts[1:]
+
+        for y, val_str in zip(years, value_str):
+            outer[y][month_str] = int(val_str)     
+    
+    return outer
 
 def get_annual_max(d):
     '''
@@ -32,6 +50,7 @@ def get_annual_max(d):
         You'll have to change vals to int to compare them. 
     '''
     pass
+
 
 def get_month_avg(d):
     '''
