@@ -60,7 +60,7 @@ def get_annual_max(d):
                 best_month = month
                 best_value = val
     
-        max_list.append((year, best_month, best_value))
+        max_list.append((year, best_month, best_value)) # this makes the tuple for each year, had to do it at the end because tuples are immutable
     print(max_list)
     return max_list
 
@@ -77,7 +77,16 @@ def get_month_avg(d):
     Note: Don't strip or otherwise modify strings. Do not change datatypes except where necessary. 
         You'll have to make the vals int or float here and round the avg to pass tests.
     '''
-    pass
+    avg = {}
+    adder = 0
+    for year, month_dict in d.items():
+        for key, value in month_dict.items():
+            adder += value
+        avg[year] = round(adder / 12)
+
+        adder = 0
+    print(avg)
+    return avg
 
 class dis7_test(unittest.TestCase):
     '''
